@@ -1,0 +1,36 @@
+<script type="text/javascript" src="images/jquery.form.min.js"></script>
+<script type="text/javascript">
+{literal}
+$(function() {
+    $(document).on("change", '#fileField',
+    function() {
+        if ($("#fileField").val() != '') {
+            var status = $("#fileBox .fileStatus");
+            var btn = $("#fileBox .btnFile");
+            $("#fileForm").ajaxForm({
+                type: 'POST',
+                beforeSubmit: function() {
+                    status.show();
+                    btn.hide();
+                },
+                success: function(html) {
+                    insertMce(html);
+                    status.hide();
+                    btn.show();
+                    $("#fileField").val('');
+                },
+                error: function() {
+                    status.hide();
+                    btn.show();
+                }
+            }).submit();
+        }
+    });
+
+});
+function btnFile() {
+    $("#fileField").click();
+}
+{/literal}
+</script>
+<form action="{$cur}.php?rec=filebox" id="fileForm" enctype="multipart/form-data" style="display:none"><input id="fileField" type="file" name="content_file"><input type="hidden" name="item_id" value="{$item_id}"></form>
